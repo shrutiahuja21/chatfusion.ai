@@ -1,0 +1,21 @@
+2026-04-17 23:45:36,529 - [INFO] - ChatFusion - Starting ChatFusion.ai FastAPI Server instance
+2026-04-17 23:45:41,969 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-17 23:45:42,007 - [INFO] - ChatFusion - Initiating OpenAI streaming for query: hi
+2026-04-17 23:45:47,618 - [ERROR] - ChatFusion - OpenAI Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-18 12:06:10,350 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-18 12:06:10,484 - [INFO] - ChatFusion - Initiating OpenAI streaming for query: hi
+2026-04-18 12:06:15,923 - [ERROR] - ChatFusion - OpenAI Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-18 12:52:19,847 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-18 12:52:19,861 - [INFO] - ChatFusion - Initiating OpenAI streaming for query: hi
+2026-04-18 12:52:23,409 - [ERROR] - ChatFusion - OpenAI Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-18 16:29:56,415 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-18 16:29:56,454 - [INFO] - ChatFusion - Initiating OpenAI streaming for query: hlo
+2026-04-18 16:29:59,837 - [ERROR] - ChatFusion - OpenAI Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-18 16:30:08,628 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-18 16:30:08,658 - [INFO] - ChatFusion - Initiating OpenAI streaming for query: hi
+2026-04-18 16:30:12,926 - [ERROR] - ChatFusion - OpenAI Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-18 16:31:08,115 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-18 16:31:08,131 - [INFO] - ChatFusion - Initiating OpenAI streaming for query: hi
+2026-04-18 16:31:11,328 - [ERROR] - ChatFusion - OpenAI Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
+2026-04-26 13:19:07,268 - [INFO] - ChatFusion - Starting ChatFusion.ai FastAPI Server instance
+2026-04-26 13:20:24,331 - [INFO] - ChatFusion - Starting ChatFusion.ai FastAPI Server instance
