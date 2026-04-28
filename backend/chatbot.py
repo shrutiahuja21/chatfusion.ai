@@ -1,66 +1,87 @@
 import json
 import os
-from openai import OpenAI
+import time
+import difflib
+from dotenv import load_dotenv
 from logger import logger
 from database import SessionLocal, ConversationLog
 
-# Initialize the OpenAI client
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "your_openai_api_key_here"))
+# Load environment variables (kept for potential future use or DB config)
+load_dotenv(override=True)
+
+# FAQ Knowledge Base
+FAQ_KB = {
+    "what is chatfusion.ai": "ChatFusion.ai is an AI-powered platform designed to help businesses automate conversations, improve customer support, and enhance user engagement.",
+    "how do i create an account": "Click on the “Sign Up” button on the homepage, enter your details, and follow the verification steps to get started.",
+    "is there a free trial available": "Yes, ChatFusion.ai offers a free trial so you can explore its features before upgrading to a premium plan.",
+    "how can i reset my password": "Go to the login page, click “Forgot Password,” and follow the instructions sent to your registered email.",
+    "what payment methods are accepted": "We accept major credit/debit cards and selected online payment methods depending on your region.",
+    "can i upgrade or downgrade my plan anytime": "Yes, you can change your subscription plan anytime from your account settings.",
+    "how do i contact support": "You can reach out through the in-app chat or email support, and our team will assist you promptly.",
+    "is my data safe": "Yes, we use industry-standard security measures to keep your data safe and protected.",
+    "is my data सुरक्षित": "Yes, we use industry-standard security measures to keep your data safe and protected."
+}
+
+ESCALATION_KEYWORDS = ["human", "agent", "live person", "support team", "talk to someone", "representative"]
+
+def get_local_response(text: str):
+    """
+    Local NLP logic to find the best matching answer from the FAQ KB.
+    """
+    text_lower = text.lower().strip()
+    
+    # 1. Check for escalation intent
+    if any(keyword in text_lower for keyword in ESCALATION_KEYWORDS):
+        return "[ESCALATE] I am connecting you with a live support agent who can assist you further. Please wait a moment.", True
+
+    # 2. Find best match in FAQ
+    questions = list(FAQ_KB.keys())
+    matches = difflib.get_close_matches(text_lower, questions, n=1, cutoff=0.4)
+    
+    if matches:
+        return FAQ_KB[matches[0]], False
+    
+    # 3. Default fallback response
+    return "I'm sorry, I couldn't find a specific answer to that in our knowledge base. You can try asking about our features, how to sign up, or request a human agent for more help.", False
 
 def stream_message(user_id: str, channel: str, text: str):
     """
-    Process incoming user text using OpenAI, streaming the response down chunk by chunk.
+    Process incoming user text using local NLP logic, simulating a streaming response.
     It yields Server-Sent Events (SSE) that Next.js can read in real time.
     Also logs the conversation to the database.
     """
-    logger.info(f"Initiating OpenAI streaming for query: {text}")
+    logger.info(f"Initiating Local NLP processing for query: {text}")
     
-    system_prompt = '''
-You are ChatFusion.ai's premium customer support assistant. 
-Your goal is to answer user queries politely.
-IMPORTANT: If the user asks for a human agent, support team, or live person, you MUST begin your response with "[ESCALATE]".
-Keep answers concise and conversational.
-'''
-
     try:
-        completion = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": text}
-            ],
-            temperature=0.7,
-            max_tokens=250,
-            stream=True
-        )
-        
-        is_escalated = False
+        response_text, is_escalated = get_local_response(text)
         buffer = ""
         
-        for chunk in completion:
-            content = chunk.choices[0].delta.content
-            if content:
-                buffer += content
-                
-                # Check for escalation marker at the very start
-                if "[ESCALATE]" in buffer and not is_escalated:
-                    logger.info("Bot detected live agent escalation via marker.")
-                    is_escalated = True
-                    yield f"data: {json.dumps({'type': 'intent', 'value': 'request_human'})}\n\n"
-                    
-                    # Clean the buffer of the keyword so user doesn't see it
-                    buffer = buffer.replace("[ESCALATE]", "")
-                    content = content.replace("[ESCALATE]", "")
-                
-                if content.strip() or " " in content:
-                    yield f"data: {json.dumps({'type': 'content', 'value': content})}\n\n"
+        # Simulate streaming by yielding chunks of the response
+        # This keeps the frontend UI experience smooth
+        words = response_text.split(" ")
         
-        # If no escalation happened, send general query intent
-        if not is_escalated:
-             yield f"data: {json.dumps({'type': 'intent', 'value': 'general_query'})}\n\n"
+        for i, word in enumerate(words):
+            content = word + (" " if i < len(words) - 1 else "")
+            buffer += content
+            
+            # Check for escalation marker at the very start (local NLP prepends it)
+            if "[ESCALATE]" in buffer and i == 0:
+                yield f"data: {json.dumps({'type': 'intent', 'value': 'request_human'})}\n\n"
+                # Remove marker for display
+                display_content = content.replace("[ESCALATE]", "").strip()
+                if display_content:
+                    yield f"data: {json.dumps({'type': 'content', 'value': display_content + ' '})}\n\n"
+                continue
+            
+            yield f"data: {json.dumps({'type': 'content', 'value': content})}\n\n"
+            time.sleep(0.05) # Small delay to simulate "thinking" and typing
+        
+        # Send intent
+        intent = "request_human" if is_escalated else "general_query"
+        yield f"data: {json.dumps({'type': 'intent', 'value': intent})}\n\n"
              
         yield "data: [DONE]\n\n"
-        logger.info("AI Stream finished. Saving to database.")
+        logger.info(f"Local NLP processing finished. Intent: {intent}. Saving to database.")
 
         # Save to Database
         db_session = SessionLocal()
@@ -69,9 +90,9 @@ Keep answers concise and conversational.
                 user_id=user_id,
                 channel=channel,
                 user_message=text,
-                bot_response=buffer,
-                intent_detected="request_human" if is_escalated else "general_query",
-                confidence=1.0,  # Mock confidence
+                bot_response=buffer.replace("[ESCALATE]", "").strip(),
+                intent_detected=intent,
+                confidence=0.9 if not is_escalated else 1.0,
                 escalated_to_agent=is_escalated
             )
             db_session.add(log_entry)
@@ -83,6 +104,6 @@ Keep answers concise and conversational.
             db_session.close()
 
     except Exception as e:
-        logger.error(f"OpenAI Error: {e}")
+        logger.error(f"Local NLP Error: {e}")
         yield f"data: {json.dumps({'type': 'error', 'value': 'I encountered an issue processing your request.'})}\n\n"
         yield "data: [DONE]\n\n"

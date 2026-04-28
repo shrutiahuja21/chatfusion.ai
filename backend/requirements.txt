@@ -4,5 +4,7 @@ pydantic
 sqlalchemy
 python-socketio
 openai
+anthropic
+python-dotenv
 alembic
 psycopg2-binary
