@@ -42,8 +42,27 @@ npm run dev
    - "I need to talk to a human agent" (Triggers Live Agent Escalation & Handover).
 3. The Next.js frontend will dynamically fetch intents and confidence scores from the Python FastAPI server.
 
+## Deployment
+
+### 1. Backend (FastAPI) - Recommended: Render
+This project is configured for one-click deployment on **Render**.
+1. Log in to [Render.com](https://render.com).
+2. Click **New +** > **Blueprint**.
+3. Connect your GitHub repository.
+4. Render will automatically detect the `render.yaml` file and set up:
+   - A **PostgreSQL** database.
+   - A **FastAPI** web service.
+5. Once deployed, copy your backend URL (e.g., `https://chatfusion-backend.onrender.com`).
+
+### 2. Frontend (Next.js) - Recommended: Vercel
+1. Log in to [Vercel.com](https://vercel.com).
+2. Import your GitHub repository.
+3. Set the **Root Directory** to `frontend`.
+4. In **Environment Variables**, add:
+   - `NEXT_PUBLIC_API_URL`: Your Render backend URL.
+5. Click **Deploy**.
+
 ## Next Steps
-This project currently simulates the NLP behavior. To switch to a production-scale system:
-- **Phase 2 (NLP Engine)**: Replace `chatbot.py` with a live **Rasa** implementation.
-- **Phase 3 (DB)**: Enable the initialized `database.py` models inside the FastApi routes to log every message to SQLite/Postgres.
-- **Phase 4 (Admin Panel)**: Begin adding routing in Next.js (`/admin`) for analytics reporting and intent training dashboards.
+This project currently uses a local NLP engine for fast responses. To switch to a production-scale system:
+- **Phase 2 (NLP Engine)**: Replace the local `FAQ_KB` in `chatbot.py` with a live **Claude** or **OpenAI** implementation by providing the API keys in your environment variables.
+- **Phase 3 (Admin Panel)**: Use the Admin Command Center (`/admin`) to monitor logs and analytics served from the FastAPI backend.
