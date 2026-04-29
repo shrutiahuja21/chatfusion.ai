@@ -19,3 +19,19 @@
 2026-04-18 16:31:11,328 - [ERROR] - ChatFusion - OpenAI Error: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}
 2026-04-26 13:19:07,268 - [INFO] - ChatFusion - Starting ChatFusion.ai FastAPI Server instance
 2026-04-26 13:20:24,331 - [INFO] - ChatFusion - Starting ChatFusion.ai FastAPI Server instance
+2026-04-28 15:46:48,634 - [INFO] - ChatFusion - Starting ChatFusion.ai FastAPI Server instance
+2026-04-28 15:47:03,835 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-28 15:47:03,859 - [INFO] - ChatFusion - Initiating Anthropic (Claude) streaming for query: hi
+2026-04-28 15:47:04,761 - [ERROR] - ChatFusion - Anthropic Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CaVzkbHy4wLTik2NBDdJK'}
+2026-04-28 15:47:14,319 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-28 15:47:14,422 - [INFO] - ChatFusion - Initiating Anthropic (Claude) streaming for query: ad
+2026-04-28 15:47:14,819 - [ERROR] - ChatFusion - Anthropic Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CaVzmMntn9Go88X92gUW8'}
+2026-04-28 15:50:20,920 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-28 15:50:20,964 - [INFO] - ChatFusion - Initiating Anthropic (Claude) streaming for query: what is chat fusion.ai
+2026-04-28 15:50:21,482 - [ERROR] - ChatFusion - Anthropic Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CaW117s8a57utRGetoTyD'}
+2026-04-28 15:50:39,111 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-28 15:50:39,114 - [INFO] - ChatFusion - Initiating Anthropic (Claude) streaming for query: what is chatfusion.ai
+2026-04-28 15:50:39,556 - [ERROR] - ChatFusion - Anthropic Error: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CaW12TBkcTHovaZgyaGhs'}
+2026-04-28 15:52:38,261 - [INFO] - ChatFusion - Incoming streaming request from User: user-1
+2026-04-28 15:52:38,290 - [INFO] - ChatFusion - Initiating Local NLP processing for query: what is chatfusion.ai
+2026-04-28 15:52:39,240 - [INFO] - ChatFusion - Local NLP processing finished. Intent: general_query. Saving to database.
