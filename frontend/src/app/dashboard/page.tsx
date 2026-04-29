@@ -39,7 +39,7 @@ export default function ChatWidget() {
     setMessages((prev) => [...prev, { id: botMessageId, text: "", sender: "bot", isStreaming: true }]);
 
     try {
-      const response = await fetch("http://localhost:8000/api/chat", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: "user-1", channel: "web", text: userMessage.text }),
